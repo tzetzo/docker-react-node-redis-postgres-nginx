@@ -46,20 +46,20 @@ after_success:
   - docker tag tzetzo/multi_docker-nginx registry.heroku.com/multi_docker-nginx/web
   - docker push registry.heroku.com/multi_docker-nginx/web
 
-  # - heroku container:release nginx node web worker
+  - heroku container:release web node react worker
 
 # GitBash - heroku stack:set container
 # heroku.yml & default.conf.template needed
-deploy:
-  provider: heroku
-  api_key:
-    # GitBash - "travis encrypt $(heroku auth:token)" - https://docs.travis-ci.com/user/deployment/heroku/
-    secure: "zqjeE5DPegNvJ5bAYjtWsqSlFoWkCx4d9fclLDlniuIQLxkz+wL8M+QaA3YNkZIWfQcih/L+B4/brPOAol+Y9F5IGH/aYh/pJIaW0U+49DcY/ntDShw2WuSEOG8w/PS3/K4DF0w5z5wOI+9n/Z4tzgTVJ+3BizymLLEJZaTb1QVD0EdT1/GIliOFX9Rb+YMNz7ms8XoD5bgk8MOnmyKmyF8/A2NRXIcpQ5uuWkGrvtXePp/5e5nxxlu6wmsdCuFEP+fYu+/8acK/pSXr+c8ngaYxqQw41DrbwoeGHpqTZ/EutCMoA0jjSD+BsPecZqraWpeo3m/p4VSSP38sYJsMAHU5bXpXDL+LyCX3AIqCQNo8GtDwNjAOHnCVTXWf1ZLKh3Pil9z0HNEa5/9kqcPAk7v25tTwhGMz97wI1YpciABupiXzptC5ErKThx+hdhHDYqHFDbviMISRm8e/WSDeyLg2tKIA0FbyPJAWcc5j7pOWShJSy5BLP/kHB97cPZ1Fjb/yEMcZUuVCT2c8RBwbYcwt1wU/fGNjP5iwS4cI8luFIQapSKPhEQUiL1VdATdG4UT+TPGYmcszruj4AfZMSKUAdeYBSdDBmYxfhSEtzVEDcwBWgLt0utNxg5C3+f62taokuefOqc5/TUMXG77I/vrOw0HzaYGuQyMExJXrlek="
-  # the name of the app in heroku
-  app: tzetzo-multi-docker
-  on:
-    # repo name in github
-    repo: tzetzo/multi-docker
+# deploy:
+#   provider: heroku
+#   api_key:
+#     # GitBash - "travis encrypt $(heroku auth:token)" - https://docs.travis-ci.com/user/deployment/heroku/
+#     secure: "zqjeE5DPegNvJ5bAYjtWsqSlFoWkCx4d9fclLDlniuIQLxkz+wL8M+QaA3YNkZIWfQcih/L+B4/brPOAol+Y9F5IGH/aYh/pJIaW0U+49DcY/ntDShw2WuSEOG8w/PS3/K4DF0w5z5wOI+9n/Z4tzgTVJ+3BizymLLEJZaTb1QVD0EdT1/GIliOFX9Rb+YMNz7ms8XoD5bgk8MOnmyKmyF8/A2NRXIcpQ5uuWkGrvtXePp/5e5nxxlu6wmsdCuFEP+fYu+/8acK/pSXr+c8ngaYxqQw41DrbwoeGHpqTZ/EutCMoA0jjSD+BsPecZqraWpeo3m/p4VSSP38sYJsMAHU5bXpXDL+LyCX3AIqCQNo8GtDwNjAOHnCVTXWf1ZLKh3Pil9z0HNEa5/9kqcPAk7v25tTwhGMz97wI1YpciABupiXzptC5ErKThx+hdhHDYqHFDbviMISRm8e/WSDeyLg2tKIA0FbyPJAWcc5j7pOWShJSy5BLP/kHB97cPZ1Fjb/yEMcZUuVCT2c8RBwbYcwt1wU/fGNjP5iwS4cI8luFIQapSKPhEQUiL1VdATdG4UT+TPGYmcszruj4AfZMSKUAdeYBSdDBmYxfhSEtzVEDcwBWgLt0utNxg5C3+f62taokuefOqc5/TUMXG77I/vrOw0HzaYGuQyMExJXrlek="
+#   # the name of the app in heroku
+#   app: tzetzo-multi-docker
+#   on:
+#     # repo name in github
+#     repo: tzetzo/multi-docker
 
 # Deployment to AWS ElasticBeanstalk only when Master Branch changed!
 # deploy:
