@@ -1,0 +1,31 @@
+sudo: required
+services:
+  # specifies docker as a dependancy
+  - docker # will be started on Travis-CI Server
+
+before_install: # commands executed before our tests are run
+  # build our React app
+  - docker build -t tzetzo/react-test -f ./client/Dockerfile.dev ./client
+  # build any other app that has tests
+
+script:
+  # tests will be run for every github branch!
+  # run our React app tests
+  - docker run -e CI=true tzetzo/react-test npm run test
+  # run any other app tests
+
+# after all tests have successfully finished
+# build Production Images for each of our services
+after_success:
+    - docker build -t tzetzo/multi_docker-react ./client # uses Dockerfile by default
+    - docker build -t tzetzo/multi_docker-node ./server
+    - docker build -t tzetzo/multi_docker-worker ./worker
+    - docker build -t tzetzo/multi_docker-nginx ./nginx
+    # Log in to the docker CLI
+    # the password & ID are setup as Env Vars inside https://travis-ci.org for the project
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Push the above Images to Docker Hub
+    - docker push tzetzo/multi_docker-react
+    - docker push tzetzo/multi_docker-node
+    - docker push tzetzo/multi_docker-worker
+    - docker push tzetzo/multi_docker-nginx
