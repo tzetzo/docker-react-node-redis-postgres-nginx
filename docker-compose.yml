@@ -1,0 +1,75 @@
+version: "3"
+
+services:
+  #1 nginx container
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:80"
+    depends_on: # these are the services this service depends on - it is started after them
+      - api
+      - client
+
+  #2 postgres container
+  postgres:
+    image: "postgres"
+    environment:
+      - POSTGRES_PASSWORD=password
+
+  #3 redis container
+  redis:
+    image: "redis"
+
+  #4 express app container
+  api:
+    # Image name "user/repo:tag"
+    # image: tzetzo/server
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    #stdin_open: true
+    # Bind Mount
+    # Changes in our Express app code on our Host(./server) will be reflected in the Express app running inside the Container on the Linux VM(/app):
+    volumes:
+      - /app/node_modules # excludes this folder from the mounting
+      - ./server:/app
+    environment:
+      - REDIS_HOST=redis # the name of the service above is used
+      - REDIS_PORT=6379 # from hub.docker.com redis documentation
+      - PGUSER=postgres
+      - PGHOST=postgres # the name of the service above is used
+      - PGDATABASE=postgres # the name of our DB
+      - PGPASSWORD=postgres_password # default password for postgres
+      - PGPORT=5432
+    depends_on:
+      - postgres
+      - redis
+
+  #5 react app container
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    stdin_open: true # React dev server exits without this
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    depends_on:
+      - api
+
+  #6 worker container
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
