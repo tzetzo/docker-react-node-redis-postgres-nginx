@@ -32,7 +32,7 @@ after_success:
 
   # Deployment to Heroku
   # Login to the Heroku Registry with Docker
-  - docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
+  - docker login --username=$HEROKU_USERNAME --password=$(heroku auth:token) registry.heroku.com
   # Tag Docker Hub Image & push it to Heroku Registry - https://devcenter.heroku.com/articles/container-registry-and-runtime
   - docker tag tzetzo/multi_docker-react registry.heroku.com/multi_docker-react/react
   - docker push registry.heroku.com/multi_docker-react/react
