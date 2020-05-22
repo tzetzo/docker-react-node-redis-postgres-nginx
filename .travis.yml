@@ -17,15 +17,61 @@ script:
 # after all tests have successfully finished
 # build Production Images for each of our services
 after_success:
-    - docker build -t tzetzo/multi_docker-react ./client # uses Dockerfile by default
-    - docker build -t tzetzo/multi_docker-node ./server
-    - docker build -t tzetzo/multi_docker-worker ./worker
-    - docker build -t tzetzo/multi_docker-nginx ./nginx
-    # Log in to the docker CLI
-    # the password & ID are setup as Env Vars inside https://travis-ci.org for the project
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-    # Push the above Images to Docker Hub
-    - docker push tzetzo/multi_docker-react
-    - docker push tzetzo/multi_docker-node
-    - docker push tzetzo/multi_docker-worker
-    - docker push tzetzo/multi_docker-nginx
+  - docker build -t tzetzo/multi_docker-react ./client # uses Dockerfile by default
+  - docker build -t tzetzo/multi_docker-node ./server
+  - docker build -t tzetzo/multi_docker-worker ./worker
+  - docker build -t tzetzo/multi_docker-nginx ./nginx
+  # Log in to the docker CLI
+  # the password & ID are setup as Env Vars inside https://travis-ci.org for the project
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push the above Images to Docker Hub
+  - docker push tzetzo/multi_docker-react
+  - docker push tzetzo/multi_docker-node
+  - docker push tzetzo/multi_docker-worker
+  - docker push tzetzo/multi_docker-nginx
+
+  # Deployment to Heroku
+  # Login to the Heroku Registry with Docker
+  - docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
+  # Tag Docker Hub Image & push it to Heroku Registry - https://devcenter.heroku.com/articles/container-registry-and-runtime
+  - docker tag tzetzo/multi_docker-react registry.heroku.com/multi_docker-react/react
+  - docker push registry.heroku.com/multi_docker-react/react
+
+  - docker tag tzetzo/multi_docker-node registry.heroku.com/multi_docker-node/node
+  - docker push registry.heroku.com/multi_docker-node/node
+
+  - docker tag tzetzo/multi_docker-worker registry.heroku.com/multi_docker-worker/worker
+  - docker push registry.heroku.com/multi_docker-worker/worker
+
+  - docker tag tzetzo/multi_docker-nginx registry.heroku.com/multi_docker-nginx/web
+  - docker push registry.heroku.com/multi_docker-nginx/web
+
+  # - heroku container:release nginx node web worker
+
+# GitBash - heroku stack:set container
+# heroku.yml & default.conf.template needed
+deploy:
+  provider: heroku
+  api_key:
+    # GitBash - "travis encrypt $(heroku auth:token)" - https://docs.travis-ci.com/user/deployment/heroku/
+    secure: "LKj0njbkLlJjRhzG+6liDfIsg9+QcEFt6IsGkVeHbBXFl9SdMnoM2YI8gaXMfB3cL0HGhrKBAmrsWBY3CHiS+nRtobc8DFaJj1nm0byuWpWBO1hvnXylqa9srEyVq1qVZUxG1hrNiE3Vyr6Mfa709kMMncMrQhmjFTVoYipHG0VCKJE6Xycvk82cV5NerKD0ereNtqsergkSCOb33GHuCho1Er8BZRyv5FKmpLxIeV/S55cEEvpjJiKTaNuwgeBsnB4hLq43mOnTCA26r0Sd3imjNA9sA4b//5UTwE+kCQI1qVCPUW/NUdaCdsbEZtHgtED+715ZtBYOPSTAYaDacmjyjAkEBzTFYsNYDjW7TV/JUjNFI9VRdH40GdV+56WnIHXXFvv+CE9Lzw001hfsmxNVHx3dUd4NuLgbTX0xhgqp1j1uzjSJYFaRY5aUKDsA9UJtubDHfqXRT1TSuZ+THHKQ0dntJncAFj7SeHbivjDYspSrHRMzF2yRxyHU4EQxSUzxQp9zKyufGcmdLgSfzfOBpIDN7DH2iHT9ZFGQSG3nKy7Hw1U43kuQHv0VXI4c/i1ut3MaXWNcGtD8jT4CvH6VpWUtaDzIDXcvbGU9HWcAGR2yKI0IUZ+OmaQJVg4eCujvbZueDObkCvF4sh9L7LE49Sf+4nkvTcWMSyHYsPQ="
+  # the name of the app in heroku
+  app: tzetzo-multi-docker
+  on:
+    # repo name in github
+    repo: tzetzo/multi-docker
+
+# Deployment to AWS ElasticBeanstalk only when Master Branch changed!
+# deploy:
+#     #edge: true #add this if you are getting a persistent missing bucket_name error with a failed build
+#     provider: elasticbeanstalk
+#     region: us-west-2
+#     app: multi-docker
+#     env: MultiDocker-env
+#     bucket_name: elasticbeanstalk-us-west-2-306476627547
+#     bucket_path: docker-multi
+#     on:
+#         branch: master
+#     # The following keys are from AWS IAM & their values are saved inside https://travis-ci.org - Settings - Environment Variables
+#     access_key_id: $AWS_ACCESS_KEY
+#     secret_access_key: $AWS_SECRET_KEY
