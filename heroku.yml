@@ -1,8 +1,0 @@
-# file used to run our Docker ImageContainers in Heroku
-
-run:
-  web: registry.heroku.com/multi_docker-nginx/web
-  node: registry.heroku.com/multi_docker-node/node
-  react: registry.heroku.com/multi_docker-react/react
-  worker: registry.heroku.com/multi_docker-worker/worker
-

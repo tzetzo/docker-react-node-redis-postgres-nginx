@@ -47,11 +47,6 @@ after_success:
   - docker tag tzetzo/multi_docker-nginx registry.heroku.com/multi_docker-nginx/web
   - docker push registry.heroku.com/multi_docker-nginx/web
 
-  # - docker run web
-  # - docker run node
-  # - docker run react
-  # - docker run worker
-  - heroku container:push web node react worker
   - heroku container:release web node react worker
 
 # GitBash - heroku stack:set container
