@@ -52,6 +52,11 @@ after_success:
   - docker push registry.heroku.com/tzetzo-multi-docker/web
   # - heroku stack:set container --app tzetzo-multi-docker
   - heroku container:release node react worker web --app tzetzo-multi-docker
+
+  - docker ps
+  - heroku container:login
+  - heroku container:push node react worker web
+  - heroku container:release node react worker web
   
   # - heroku container:release web node react worker
 
