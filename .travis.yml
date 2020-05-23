@@ -19,16 +19,16 @@ script:
 # after all tests have successfully finished
 # build Production Images for each of our services
 after_success:
-  - docker build -t tzetzo/multi_docker-react ./client # uses Dockerfile by default
-  - docker build -t tzetzo/multi_docker-node ./server
+  - docker build -t tzetzo/multi_docker-client ./client # uses Dockerfile by default
+  - docker build -t tzetzo/multi_docker-api ./server
   - docker build -t tzetzo/multi_docker-worker ./worker
   - docker build -t tzetzo/multi_docker-nginx ./nginx
   # Log in to the docker CLI
   # the password & ID are setup as Env Vars inside https://travis-ci.org for the project
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Push the above Images to Docker Hub
-  - docker push tzetzo/multi_docker-react
-  - docker push tzetzo/multi_docker-node
+  - docker push tzetzo/multi_docker-client
+  - docker push tzetzo/multi_docker-api
   - docker push tzetzo/multi_docker-worker
   - docker push tzetzo/multi_docker-nginx
 
@@ -39,11 +39,11 @@ after_success:
   - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
   # Tag Docker Hub Image & push it to Heroku Registry - https://devcenter.heroku.com/articles/container-registry-and-runtime
 
-  - docker tag tzetzo/multi_docker-node registry.heroku.com/tzetzo-multi-docker/node
-  - docker push registry.heroku.com/tzetzo-multi-docker/node
+  - docker tag tzetzo/multi_docker-api registry.heroku.com/tzetzo-multi-docker/api
+  - docker push registry.heroku.com/tzetzo-multi-docker/api
 
-  - docker tag tzetzo/multi_docker-react registry.heroku.com/tzetzo-multi-docker/react
-  - docker push registry.heroku.com/tzetzo-multi-docker/react
+  - docker tag tzetzo/multi_docker-client registry.heroku.com/tzetzo-multi-docker/client
+  - docker push registry.heroku.com/tzetzo-multi-docker/client
 
   - docker tag tzetzo/multi_docker-worker registry.heroku.com/tzetzo-multi-docker/worker
   - docker push registry.heroku.com/tzetzo-multi-docker/worker
@@ -51,14 +51,14 @@ after_success:
   - docker tag tzetzo/multi_docker-nginx registry.heroku.com/tzetzo-multi-docker/web
   - docker push registry.heroku.com/tzetzo-multi-docker/web
   # - heroku stack:set container --app tzetzo-multi-docker
-  - heroku container:release node react worker web --app tzetzo-multi-docker
+  - heroku container:release api client worker web --app tzetzo-multi-docker
 
   - docker ps
   - heroku container:login
-  - heroku container:push node react worker web
-  - heroku container:release node react worker web
+  - heroku container:push api client worker web
+  - heroku container:release api client worker web
   
-  # - heroku container:release web node react worker
+  # - heroku container:release web api client worker
 
 # before_deploy: "echo 'ready Tzetzo?'"
 # GitBash - heroku stack:set container
