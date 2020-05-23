@@ -53,10 +53,10 @@ after_success:
   # - heroku stack:set container --app tzetzo-multi-docker
   - heroku container:release api client worker web --app tzetzo-multi-docker
 
-  - docker ps
-  - heroku container:login
-  - heroku container:push api client worker web
-  - heroku container:release api client worker web
+  # - docker ps
+  # - heroku container:login
+  # - heroku container:push api client worker web
+  # - heroku container:release api client worker web
   
   # - heroku container:release web api client worker
 
