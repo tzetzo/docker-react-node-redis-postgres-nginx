@@ -50,7 +50,7 @@ after_success:
 
   - docker tag tzetzo/multi_docker-nginx registry.heroku.com/tzetzo-multi-docker/web
   - docker push registry.heroku.com/tzetzo-multi-docker/web
-  - heroku stack:set container --app tzetzo-multi-docker
+  # - heroku stack:set container --app tzetzo-multi-docker
   - heroku container:release web --app tzetzo-multi-docker
   
   # - heroku container:release web node react worker

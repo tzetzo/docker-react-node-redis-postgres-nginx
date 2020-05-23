@@ -1,0 +1,4 @@
+run:
+  web: heroku container:release web --app tzetzo-multi-docker
+# release:
+#   image: web
