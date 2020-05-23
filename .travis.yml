@@ -34,13 +34,14 @@ after_success:
   # Deployment to Heroku
   # Login to the Heroku Registry with Docker
   # Heroku Authorization token "5747991c-6c13-44be-9f1a-213562da815d"
-  - docker login --username=$HEROKU_USERNAME --password=$HEROKU_PASSWORD registry.heroku.com
+  # - docker login --username="$HEROKU_USERNAME" --password="$HEROKU_PASSWORD" registry.heroku.com
+  - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
   - heroku container:login
   # Tag Docker Hub Image & push it to Heroku Registry - https://devcenter.heroku.com/articles/container-registry-and-runtime
-  - docker tag tzetzo/multi_docker-react registry.heroku.com/multi_docker-react/react
-  - docker push registry.heroku.com/multi_docker-react/react
-  - heroku stack:set container --app multi_docker-react
-  - heroku container:release react --app multi_docker-react
+  # - docker tag tzetzo/multi_docker-react registry.heroku.com/multi_docker-react/react
+  # - docker push registry.heroku.com/multi_docker-react/react
+  # - heroku stack:set container --app multi_docker-react
+  # - heroku container:release react --app multi_docker-react
 
   # - docker tag tzetzo/multi_docker-node registry.heroku.com/multi_docker-node/node
   # - docker push registry.heroku.com/multi_docker-node/node
@@ -48,8 +49,10 @@ after_success:
   # - docker tag tzetzo/multi_docker-worker registry.heroku.com/multi_docker-worker/worker
   # - docker push registry.heroku.com/multi_docker-worker/worker
 
-  # - docker tag tzetzo/multi_docker-nginx registry.heroku.com/multi_docker-nginx/web
-  # - docker push registry.heroku.com/multi_docker-nginx/web
+  - docker tag tzetzo/multi_docker-nginx registry.heroku.com/multi_docker-nginx/web
+  - docker push registry.heroku.com/multi_docker-nginx/web
+  - heroku stack:set container --app multi_docker-nginx
+  - heroku container:release web --app multi_docker-nginx
 
   # - heroku container:release web node react worker
 
