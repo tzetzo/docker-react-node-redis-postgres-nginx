@@ -68,8 +68,10 @@ deploy:
   # the name of the app in heroku
   app: tzetzo-multi-docker
   on:
+    tags: true
+    all_branches: true
     # repo name in github
-    repo: tzetzo/multi-docker
+    # repo: tzetzo/multi-docker
     
 
 after_deploy: "echo 'done Tzetzo?'"
