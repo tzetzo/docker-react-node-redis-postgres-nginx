@@ -3,7 +3,7 @@ sudo: required
 services:
   # specifies docker as a dependancy
   - docker # will be started on Travis-CI Server
-  # - heroku
+  - heroku
 
 before_install: # commands executed before our tests are run
   # build our React app
@@ -71,7 +71,7 @@ deploy:
     # repo name in github
     repo: tzetzo/multi-docker
   run:
-    - heroku container:release web --app multi_docker-nginx
+    - heroku container:release web
 
 after_deploy: "echo 'done Tzetzo?'"
 
