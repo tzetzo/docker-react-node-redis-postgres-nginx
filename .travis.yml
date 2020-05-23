@@ -53,8 +53,8 @@ after_success:
   - docker tag tzetzo/multi_docker-nginx registry.heroku.com/multi_docker-nginx/web
   - docker push registry.heroku.com/multi_docker-nginx/web
   # - heroku stack:set container --app multi_docker-nginx
+  - heroku container:release web --app multi_docker-nginx
   
-
   # - heroku container:release web node react worker
 
 before_deploy: "echo 'ready Tzetzo?'"
@@ -70,8 +70,7 @@ deploy:
   on:
     # repo name in github
     repo: tzetzo/multi-docker
-  run:
-    - heroku container:release web
+    
 
 after_deploy: "echo 'done Tzetzo?'"
 
