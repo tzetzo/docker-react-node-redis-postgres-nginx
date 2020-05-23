@@ -35,8 +35,8 @@ after_success:
   # Login to the Heroku Registry with Docker
   # Heroku Authorization token "5747991c-6c13-44be-9f1a-213562da815d"
   # - docker login --username="$HEROKU_USERNAME" --password="$HEROKU_PASSWORD" registry.heroku.com
-  - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
-  - heroku container:login
+  # - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
+  # - heroku container:login
   # Tag Docker Hub Image & push it to Heroku Registry - https://devcenter.heroku.com/articles/container-registry-and-runtime
   # - docker tag tzetzo/multi_docker-react registry.heroku.com/multi_docker-react/react
   # - docker push registry.heroku.com/multi_docker-react/react
@@ -49,25 +49,28 @@ after_success:
   # - docker tag tzetzo/multi_docker-worker registry.heroku.com/multi_docker-worker/worker
   # - docker push registry.heroku.com/multi_docker-worker/worker
 
-  - docker tag tzetzo/multi_docker-nginx registry.heroku.com/multi_docker-nginx/web
-  - docker push registry.heroku.com/multi_docker-nginx/web
-  - heroku stack:set container --app multi_docker-nginx
-  - heroku container:release web --app multi_docker-nginx
+  # - docker tag tzetzo/multi_docker-nginx registry.heroku.com/multi_docker-nginx/web
+  # - docker push registry.heroku.com/multi_docker-nginx/web
+  # - heroku stack:set container --app multi_docker-nginx
+  # - heroku container:release web --app multi_docker-nginx
 
   # - heroku container:release web node react worker
 
 # GitBash - heroku stack:set container
 # heroku.yml & default.conf.template needed
 deploy:
-  provider: heroku
-  api_key:
-    # GitBash - "travis encrypt $(heroku auth:token)" - https://docs.travis-ci.com/user/deployment/heroku/
-    secure: "zqjeE5DPegNvJ5bAYjtWsqSlFoWkCx4d9fclLDlniuIQLxkz+wL8M+QaA3YNkZIWfQcih/L+B4/brPOAol+Y9F5IGH/aYh/pJIaW0U+49DcY/ntDShw2WuSEOG8w/PS3/K4DF0w5z5wOI+9n/Z4tzgTVJ+3BizymLLEJZaTb1QVD0EdT1/GIliOFX9Rb+YMNz7ms8XoD5bgk8MOnmyKmyF8/A2NRXIcpQ5uuWkGrvtXePp/5e5nxxlu6wmsdCuFEP+fYu+/8acK/pSXr+c8ngaYxqQw41DrbwoeGHpqTZ/EutCMoA0jjSD+BsPecZqraWpeo3m/p4VSSP38sYJsMAHU5bXpXDL+LyCX3AIqCQNo8GtDwNjAOHnCVTXWf1ZLKh3Pil9z0HNEa5/9kqcPAk7v25tTwhGMz97wI1YpciABupiXzptC5ErKThx+hdhHDYqHFDbviMISRm8e/WSDeyLg2tKIA0FbyPJAWcc5j7pOWShJSy5BLP/kHB97cPZ1Fjb/yEMcZUuVCT2c8RBwbYcwt1wU/fGNjP5iwS4cI8luFIQapSKPhEQUiL1VdATdG4UT+TPGYmcszruj4AfZMSKUAdeYBSdDBmYxfhSEtzVEDcwBWgLt0utNxg5C3+f62taokuefOqc5/TUMXG77I/vrOw0HzaYGuQyMExJXrlek="
-  # the name of the app in heroku
-  app: tzetzo-multi-docker
+  # provider: heroku
+  provider: script
+  script: bash docker_push
+  # api_key:
+  #   # GitBash - "travis encrypt $(heroku auth:token)" - https://docs.travis-ci.com/user/deployment/heroku/
+  #   secure: "zqjeE5DPegNvJ5bAYjtWsqSlFoWkCx4d9fclLDlniuIQLxkz+wL8M+QaA3YNkZIWfQcih/L+B4/brPOAol+Y9F5IGH/aYh/pJIaW0U+49DcY/ntDShw2WuSEOG8w/PS3/K4DF0w5z5wOI+9n/Z4tzgTVJ+3BizymLLEJZaTb1QVD0EdT1/GIliOFX9Rb+YMNz7ms8XoD5bgk8MOnmyKmyF8/A2NRXIcpQ5uuWkGrvtXePp/5e5nxxlu6wmsdCuFEP+fYu+/8acK/pSXr+c8ngaYxqQw41DrbwoeGHpqTZ/EutCMoA0jjSD+BsPecZqraWpeo3m/p4VSSP38sYJsMAHU5bXpXDL+LyCX3AIqCQNo8GtDwNjAOHnCVTXWf1ZLKh3Pil9z0HNEa5/9kqcPAk7v25tTwhGMz97wI1YpciABupiXzptC5ErKThx+hdhHDYqHFDbviMISRm8e/WSDeyLg2tKIA0FbyPJAWcc5j7pOWShJSy5BLP/kHB97cPZ1Fjb/yEMcZUuVCT2c8RBwbYcwt1wU/fGNjP5iwS4cI8luFIQapSKPhEQUiL1VdATdG4UT+TPGYmcszruj4AfZMSKUAdeYBSdDBmYxfhSEtzVEDcwBWgLt0utNxg5C3+f62taokuefOqc5/TUMXG77I/vrOw0HzaYGuQyMExJXrlek="
+  # # the name of the app in heroku
+  # app: tzetzo-multi-docker
   on:
+    branch: master
     # repo name in github
-    repo: tzetzo/multi-docker
+    # repo: tzetzo/multi-docker
 
 # Deployment to AWS ElasticBeanstalk only when Master Branch changed!
 # deploy:
