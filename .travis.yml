@@ -52,30 +52,7 @@ after_success:
   - docker push registry.heroku.com/tzetzo-multi-docker/web
   # - heroku stack:set container --app tzetzo-multi-docker
   - heroku container:release api client worker web --app tzetzo-multi-docker
-
-  # - docker ps
-  # - heroku container:login
-  # - heroku container:push api client worker web
-  # - heroku container:release api client worker web
   
-  # - heroku container:release web api client worker
-
-# before_deploy: "echo 'ready Tzetzo?'"
-# GitBash - heroku stack:set container
-# heroku.yml & default.conf.template needed
-# deploy:
-#   provider: heroku
-#   api_key:
-#     # GitBash - "travis encrypt $(heroku auth:token)" - https://docs.travis-ci.com/user/deployment/heroku/
-#     secure: "RCeNgqO/bolmtn0aGXRqx4kU0egYZlWp/YQVwYCu36PjgQ/t2JU49JqRn5qs12jZHIS6myHcgLevM5ACsSi47K/wfmsQhREzHW8JAFQHXn9S5PXf8Ynj8VSDbheo6bWU3Kx0hjmPTYeT1mpK2/932CTEjHhmT1Zs7OVyvKe1Ga3hcAwOJnhyEBky7DkMn07A/dDboZo44YQgnFnVqE79lKs2hA64FEzeDV4qQwaFSdq6JmGnrKZWvKQ1OT+aiRAfTRJj98V7en+APWHE/ovMwVPADUjJLA/AUebrWa1KlWIMF2zhb1GU4z2/dng8QwfwmX+f/F1sMRFoGj6VrI22I3LI0kTiwQwiUkqAJQONfVPfC9z+4kMxaVUbiSY2WYjiazQbb/i0a/zQbsLiNbOV6pgvCbK0DsNVH0O6ysQofKE3MP3W+H3jkQPXPhOuQJbWyQpomSeX2xYL8dxOTAPDCbflTrqQmUoSpM5NixMuhZnAN+ry0EbrtzMdnoPwyJC4EwBRzICv1vQ7SqYr2gFLT7jEFLWJ52E0Gs1WhNCBglBvg5ASa/yCtSJZ/VAOoRU70FMIe2uhGsw/pGHPCdrpLYSDwa0hQkmaO8O3yQ07d4NiNUFa+HtmcZR/jWB69Ltxv9n2T6fBoV/iUI91nLyTxJAMZPc8oA5VTqV4KqZgdR4="
-#   # the name of the app in heroku
-#   app: tzetzo-multi-docker
-#   # on:
-#   #   # repo name in github
-#   #   repo: tzetzo/multi-docker
-    
-
-# after_deploy: "echo 'done Tzetzo?'"
 
 # Deployment to AWS ElasticBeanstalk only when Master Branch changed!
 # deploy:
