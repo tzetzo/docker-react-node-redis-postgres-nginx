@@ -13,7 +13,7 @@ RUN npm run build
 FROM nginx
 
 # The port our react app uses
-EXPOSE 80
+EXPOSE $PORT
 
 # put our built React app in the nginx folder for hosting static content 
 # builder comes from Phase 1
@@ -21,3 +21,5 @@ COPY --from=builder /app/build /usr/share/nginx/html
 
 # override nginx configuration with our own
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+
