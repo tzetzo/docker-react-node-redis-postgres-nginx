@@ -32,34 +32,34 @@ after_success:
 
   # Deployment to Heroku
   # Login to the Heroku Registry with Docker
-  - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
-  # Tag Docker Hub Image & push it to Heroku Registry - https://devcenter.heroku.com/articles/container-registry-and-runtime
-  - docker tag tzetzo/multi_docker-api registry.heroku.com/tzetzo-multi-docker/api
-  - docker push registry.heroku.com/tzetzo-multi-docker/api
+  # - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
+  # # Tag Docker Hub Image & push it to Heroku Registry - https://devcenter.heroku.com/articles/container-registry-and-runtime
+  # - docker tag tzetzo/multi_docker-api registry.heroku.com/tzetzo-multi-docker/api
+  # - docker push registry.heroku.com/tzetzo-multi-docker/api
 
-  - docker tag tzetzo/multi_docker-client registry.heroku.com/tzetzo-multi-docker/client
-  - docker push registry.heroku.com/tzetzo-multi-docker/client
+  # - docker tag tzetzo/multi_docker-client registry.heroku.com/tzetzo-multi-docker/client
+  # - docker push registry.heroku.com/tzetzo-multi-docker/client
 
-  - docker tag tzetzo/multi_docker-worker registry.heroku.com/tzetzo-multi-docker/worker
-  - docker push registry.heroku.com/tzetzo-multi-docker/worker
+  # - docker tag tzetzo/multi_docker-worker registry.heroku.com/tzetzo-multi-docker/worker
+  # - docker push registry.heroku.com/tzetzo-multi-docker/worker
 
-  - docker tag tzetzo/multi_docker-nginx registry.heroku.com/tzetzo-multi-docker/web
-  - docker push registry.heroku.com/tzetzo-multi-docker/web
+  # - docker tag tzetzo/multi_docker-nginx registry.heroku.com/tzetzo-multi-docker/web
+  # - docker push registry.heroku.com/tzetzo-multi-docker/web
 
-  - heroku container:release api client worker web --app tzetzo-multi-docker
+  # - heroku container:release api client worker web --app tzetzo-multi-docker
   
 
 # Deployment to AWS ElasticBeanstalk only when Master Branch changed!
-# deploy:
-#     #edge: true #add this if you are getting a persistent missing bucket_name error with a failed build
-#     provider: elasticbeanstalk
-#     region: us-west-2
-#     app: multi-docker
-#     env: MultiDocker-env
-#     bucket_name: elasticbeanstalk-us-west-2-306476627547
-#     bucket_path: docker-multi
-#     on:
-#         branch: master
-#     # The following keys are from AWS IAM & their values are saved inside https://travis-ci.org - Settings - Environment Variables
-#     access_key_id: $AWS_ACCESS_KEY
-#     secret_access_key: $AWS_SECRET_KEY
+deploy:
+    #edge: true #add this if you are getting a persistent missing bucket_name error with a failed build
+    provider: elasticbeanstalk
+    region: us-west-2
+    app: multi-docker
+    env: MultiDocker-env
+    bucket_name: elasticbeanstalk-us-west-2-306476627547
+    bucket_path: docker-multi
+    on:
+        branch: master
+    # The following keys are from AWS IAM & their values are saved inside https://travis-ci.org - Settings - Environment Variables
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
