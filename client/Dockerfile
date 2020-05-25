@@ -13,7 +13,7 @@ RUN npm run build
 FROM nginx
 
 # The port our react app uses
-EXPOSE 3000
+EXPOSE 80
 
 # put our built React app in the nginx folder for hosting static content 
 # builder comes from Phase 1
