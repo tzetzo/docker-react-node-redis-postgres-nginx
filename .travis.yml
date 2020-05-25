@@ -1,9 +1,7 @@
-language: node_js
 sudo: required
 services:
   # specifies docker as a dependancy
   - docker # will be started on Travis-CI Server
-  - heroku
 
 before_install: # commands executed before our tests are run
   # build our React app
@@ -34,11 +32,8 @@ after_success:
 
   # Deployment to Heroku
   # Login to the Heroku Registry with Docker
-  # Heroku Authorization token "5747991c-6c13-44be-9f1a-213562da815d"
-  # - docker login --username="$HEROKU_USERNAME" --password="$HEROKU_PASSWORD" registry.heroku.com
   - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
   # Tag Docker Hub Image & push it to Heroku Registry - https://devcenter.heroku.com/articles/container-registry-and-runtime
-
   # - docker tag tzetzo/multi_docker-api registry.heroku.com/tzetzo-multi-docker/api
   # - docker push registry.heroku.com/tzetzo-multi-docker/api
 
@@ -48,10 +43,10 @@ after_success:
   # - docker tag tzetzo/multi_docker-worker registry.heroku.com/tzetzo-multi-docker/worker
   # - docker push registry.heroku.com/tzetzo-multi-docker/worker
 
-  - docker tag tzetzo/multi_docker-nginx registry.heroku.com/tzetzo-multi-docker/nginx
-  - docker push registry.heroku.com/tzetzo-multi-docker/nginx
-  # - heroku stack:set container --app tzetzo-multi-docker
-  - heroku container:release client nginx --app tzetzo-multi-docker
+  - docker tag tzetzo/multi_docker-nginx registry.heroku.com/tzetzo-multi-docker/web
+  - docker push registry.heroku.com/tzetzo-multi-docker/web
+
+  - heroku container:release client web --app tzetzo-multi-docker
   
 
 # Deployment to AWS ElasticBeanstalk only when Master Branch changed!
